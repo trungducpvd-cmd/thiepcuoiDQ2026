@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Wedding Invitation</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
     /* Reset CSS cơ bản */
     * {
@@ -14,21 +18,23 @@
     }
 
     body {
-      background: #e0e0e0;
+      background: #e0e0e0; /* Nền xám ngoài app */
       display: flex;
       justify-content: center;
-      font-family: system-ui, -apple-system, sans-serif;
+      /* Dùng font Quicksand cho toàn bộ body */
+      font-family: 'Quicksand', sans-serif;
+      color: #333;
       min-height: 100vh;
-      overflow-x: hidden; /* Tránh thanh cuộn ngang do hiệu ứng rơi */
+      overflow-x: hidden; 
     }
 
     #app-container {
       width: 100%;
       max-width: 430px;
-      background: #fff3f7;
+      background: #fffafa; /* Màu trắng hơi pha hồng pastel */
       min-height: 100vh;
       position: relative;
-      box-shadow: 0 0 25px rgba(0,0,0,0.15);
+      box-shadow: 0 0 30px rgba(0,0,0,0.2);
       text-align: center;
     }
 
@@ -44,19 +50,21 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background: linear-gradient(135deg, #ffd1dc, #ffe8f0);
+      /* Nền gradient lãng mạn hơn */
+      background: linear-gradient(135deg, #ffe4e1, #fff0f5);
       padding: 20px;
     }
 
     .hero h1 {
-      font-size: 38px;
-      color: #c2185b;
-      margin: 15px 0;
-      letter-spacing: 2px;
+      font-family: 'Dancing Script', cursive;
+      font-size: 46px; /* Chữ to và uốn lượn */
+      color: #900C3F; /* Đỏ rượu vang sang trọng */
+      margin: 10px 0 25px 0;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
     }
 
     .flowerDecor {
-      font-size: 26px;
+      font-size: 28px;
       animation: float 4s infinite ease-in-out;
     }
 
@@ -67,42 +75,50 @@
     }
 
     .names {
-      font-size: 26px;
-      font-weight: bold;
-      color: #c2185b;
-      line-height: 1.4;
+      font-family: 'Dancing Script', cursive;
+      font-size: 40px;
+      font-weight: 700;
+      color: #C70039;
+      line-height: 1.2;
     }
 
     .date {
-      font-size: 16px;
-      margin-top: 10px;
-      font-weight: 500;
+      font-size: 18px;
+      margin-top: 15px;
+      font-weight: 600;
+      color: #581845;
+      letter-spacing: 1px;
     }
 
     #countdown {
       font-size: 18px;
       margin-top: 15px;
-      font-weight: bold;
-      color: #ad1457;
+      font-weight: 700;
+      color: #FF5733;
+      background: rgba(255,255,255,0.6);
+      padding: 8px 16px;
+      border-radius: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
 
     .inviteNote {
-      margin-top: 25px;
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(8px);
-      padding: 16px;
-      border-radius: 12px;
+      margin-top: 30px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      border-radius: 16px;
       width: 100%;
-      font-size: 14px;
+      font-size: 15px;
       line-height: 1.6;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      box-shadow: 0 8px 20px rgba(144, 12, 63, 0.08);
+      border: 1px solid rgba(255, 192, 203, 0.3);
     }
 
     /* --- ENVELOPE --- */
     #envelopeWrap {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: #ffdce6;
+      background: #ffe4e1;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -110,68 +126,98 @@
     }
 
     .envelope {
-      width: 260px;
-      height: 160px;
-      background: #e57373;
+      width: 280px;
+      height: 170px;
+      background: #e07a5f;
       cursor: pointer;
       position: relative;
-      border-radius: 4px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      border-radius: 6px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      letter-spacing: 1px;
+    }
+
+    /* Thêm chữ Mở thiệp nhấp nháy */
+    .envelope span {
+      z-index: 10;
+      background: rgba(255,255,255,0.2);
+      padding: 8px 16px;
+      border-radius: 20px;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.8; }
+      100% { transform: scale(1); opacity: 1; }
     }
 
     .flap {
       position: absolute;
-      border-left: 130px solid transparent;
-      border-right: 130px solid transparent;
-      border-bottom: 80px solid #ef9a9a;
-      top: -80px;
+      border-left: 140px solid transparent;
+      border-right: 140px solid transparent;
+      border-bottom: 85px solid #f4a261;
+      top: -85px;
     }
 
-    /* --- BUTTONS CHUNG --- */
+    /* --- NÚT BẤM CHUNG --- */
     h2 {
-      color: #c2185b;
-      margin-bottom: 20px;
-      font-size: 24px;
+      font-family: 'Dancing Script', cursive;
+      color: #900C3F;
+      margin-bottom: 25px;
+      font-size: 34px;
+      font-weight: 700;
     }
 
     button {
       border: none;
-      border-radius: 8px;
-      background: #c2185b;
+      border-radius: 25px; /* Bo tròn mượt mà */
+      background: #C70039;
       color: white;
-      font-size: 13px;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(199, 0, 57, 0.2);
     }
 
     button:active {
-      background: #ad1457;
+      transform: scale(0.96);
+      background: #900C3F;
     }
 
-    /* --- MAP BUTTONS (Custom Layout) --- */
+    /* --- MAP BUTTONS --- */
     .mapButtons {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 20px;
+      gap: 10px;
+      margin-bottom: 25px;
     }
 
     .btn-top {
       width: 100%;
-      padding: 12px 10px;
+      padding: 14px 10px;
+      font-size: 15px;
     }
 
     .btn-bottom {
-      flex: 1; /* Tự động chia đôi không gian */
+      flex: 1;
       padding: 12px 10px;
     }
 
     .mapContainer {
       width: 100%;
-      border-radius: 12px;
+      border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
       background: #fff;
+      border: 3px solid #fff; /* Viền trắng ảnh phong cách Polaroid */
     }
 
     /* --- TIMELINE BUTTONS --- */
@@ -179,8 +225,8 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 8px;
-      margin-bottom: 20px;
+      gap: 10px;
+      margin-bottom: 25px;
     }
 
     .timelineButtons button {
@@ -191,16 +237,17 @@
     .galleryWrap {
       position: relative;
       width: 100%;
-      border-radius: 12px;
+      border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      border: 3px solid #fff;
     }
 
     .galleryWrap img {
       width: 100%;
       display: block;
       object-fit: cover;
-      height: 250px;
+      height: 260px;
     }
 
     .timelineText {
@@ -208,24 +255,27 @@
       bottom: 15px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(0,0,0,0.6);
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(4px);
       color: white;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 13px;
+      padding: 8px 20px;
+      border-radius: 25px;
+      font-size: 14px;
       white-space: nowrap;
+      font-weight: 500;
     }
 
     /* --- WISHES --- */
     #wishWall {
-      height: 140px;
+      height: 160px;
       overflow: hidden;
       width: 100%;
       position: relative;
-      background: rgba(255, 255, 255, 0.4);
-      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 16px;
       padding: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
+      border: 1px dashed #ffb6c1;
     }
 
     #wishList {
@@ -236,59 +286,67 @@
     }
 
     .wishItem {
-      background: rgba(255,255,255,0.85);
+      background: rgba(255,255,255,0.95);
       backdrop-filter: blur(6px);
-      border-radius: 10px;
-      padding: 10px 12px;
-      margin: 5px 0;
-      font-size: 13px;
+      border-radius: 12px;
+      padding: 12px 15px;
+      margin: 6px 0;
+      font-size: 14px;
       text-align: left;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-      
-      /* Cắt chữ thành 1 dòng + hiển thị dấu ... */
+      box-shadow: 0 4px 10px rgba(0,0,0,0.04);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
     .wishItem b {
-      color: #c2185b;
+      color: #C70039;
+      font-weight: 700;
     }
 
     .form-group {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
     }
 
     input, textarea {
       width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid #e0e0e0;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid #ffb6c1;
       font-family: inherit;
       font-size: 14px;
+      background: rgba(255, 255, 255, 0.8);
+      transition: border 0.3s;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #C70039;
+      background: #fff;
     }
 
     textarea {
       resize: none;
-      height: 80px;
+      height: 90px;
     }
 
     button.send {
-      padding: 14px;
+      padding: 16px;
       font-size: 16px;
-      font-weight: bold;
+      font-weight: 700;
+      letter-spacing: 1px;
     }
 
-    /* --- FALLING (TOÀN MÀN HÌNH) --- */
+    /* --- FALLING --- */
     .fall {
-      position: fixed; /* Rơi trên toàn bộ web (fixed) */
+      position: fixed; 
       top: -20px;
-      font-size: 20px;
+      font-size: 22px;
       animation: fall linear forwards;
-      z-index: 1000; /* Nằm đè lên cả nền ngoài */
-      pointer-events: none; /* Tránh click nhầm vào hoa */
+      z-index: 1000; 
+      pointer-events: none; 
     }
 
     @keyframes fall {
@@ -304,27 +362,28 @@
   <div id="envelopeWrap">
     <div class="envelope" onclick="openInvite()">
       <div class="flap"></div>
+      <span>Mở Thiệp 💌</span>
     </div>
   </div>
 
   <div id="main" style="display:none">
     
     <section class="hero">
-      <div class="flowerDecor">🌸 🌸 🌸</div>
+      <div class="flowerDecor">🌸 🕊️ 🌸</div>
       <h1>Wedding Invitation</h1>
       
       <div class="names">Trần Trung Đức</div>
-      <div class="names" style="font-size: 20px; margin: 5px 0;">❤️</div>
+      <div class="names" style="font-size: 24px; margin: 5px 0;">&</div>
       <div class="names">Nguyễn Thị Diễm Quỳnh</div>
       
-      <div class="date">25/04/2026 — 18:00</div>
+      <div class="date">25 . 04 . 2026</div>
       <div id="countdown">Đang tải đếm ngược...</div>
       
       <div class="inviteNote">
         <p>Trân trọng kính mời dự tiệc báo hỉ của chúng tôi tại:</p>
-        <p style="margin: 10px 0;">
+        <p style="margin: 12px 0; font-size: 16px;">
           <b>Nhà hàng tiệc cưới Diamond Palace II</b><br>
-          Sảnh <b>Saphire 1</b>, tầng 2
+          <span style="color: #900C3F;">Sảnh <b>Saphire 1</b>, tầng 2</span>
         </p>
         <p>
           Đón khách <b>18:00</b> — Khai tiệc <b>19:00</b>
@@ -363,14 +422,14 @@
     </section>
 
     <section>
-      <h2>Lời chúc</h2>
+      <h2>Sổ lưu bút</h2>
       <div id="wishWall">
         <div id="wishList"></div>
       </div>
       
       <div class="form-group">
-        <input id="name" placeholder="Tên của bạn">
-        <textarea id="wish" placeholder="Viết lời chúc"></textarea>
+        <input id="name" placeholder="Tên của bạn là gì?">
+        <textarea id="wish" placeholder="Gửi gắm lời chúc tốt đẹp nhất..."></textarea>
         <button class="send" onclick="sendWish()">Gửi Lời Chúc 💌</button>
       </div>
     </section>
@@ -387,7 +446,6 @@
   var scriptURL = "https://script.google.com/macros/s/AKfycbxxEWDSGCb75NJLCtmpY2fWyqseWokictFnhc1OThQ6o_JkHL9QpOa2A2xRn_JFliNaFg/exec";
   var wishes = [];
 
-  /* Mở thiệp */
   function openInvite() {
     document.getElementById("envelopeWrap").style.display = "none";
     document.getElementById("main").style.display = "block";
@@ -396,28 +454,26 @@
     loadWishes();
   }
 
-  /* Hoa rơi toàn màn hình */
   function startFlowers() {
     setInterval(() => {
       let el = document.createElement("div");
       el.className = "fall";
-      el.innerHTML = Math.random() > 0.5 ? "🌸" : "❤️";
-      // Rải ngẫu nhiên trên toàn bộ chiều rộng trình duyệt (100vw)
+      // Trộn nhiều icon lãng mạn
+      let icons = ["🌸", "❤️", "✨", "🕊️"];
+      el.innerHTML = icons[Math.floor(Math.random() * icons.length)];
       el.style.left = Math.random() * 100 + "vw"; 
-      el.style.animationDuration = (4 + Math.random() * 4) + "s";
-      // Gắn trực tiếp vào thẻ body để thoát khỏi app-container
+      el.style.animationDuration = (4 + Math.random() * 5) + "s";
       document.body.appendChild(el);
-      setTimeout(() => el.remove(), 8000);
-    }, 400);
+      setTimeout(() => el.remove(), 9000);
+    }, 450);
   }
 
-  /* Đếm ngược */
   var weddingDate = new Date("April 25 2026 18:00:00").getTime();
   setInterval(() => {
     var now = new Date().getTime();
     var d = weddingDate - now;
     if(d < 0) {
-      document.getElementById("countdown").innerHTML = "Đã đến giờ G!";
+      document.getElementById("countdown").innerHTML = "Đã đến giờ G! 🎉";
       return;
     }
     var days = Math.floor(d / (1000 * 60 * 60 * 24));
@@ -429,7 +485,6 @@
       days + " ngày " + hours + " giờ " + minutes + " phút " + seconds + " giây";
   }, 1000);
 
-  /* Bản đồ */
   function changeMap(n) {
     var maps = [
       `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4848.185411235426!2d106.6430599!3d10.7825433!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752eb20824063f%3A0x1e05528343d1b39b!2zRGlhbW9uZCBQbGFjZSBJSSAtIMOCdSBDxqEgLSBUcnVuZyB0w6JtIEjhu5lpIG5naOG7iyAtIFRp4buHYyBjxrDhu5tp!5e1!3m2!1svi!2s!4v1773722075917!5m2!1svi!2s`,
@@ -439,7 +494,6 @@
     document.getElementById("mapFrame").src = maps[n - 1];
   }
 
-  /* Lời chúc */
   function loadWishes() {
     fetch(scriptURL)
       .then(r => r.json())
@@ -453,7 +507,6 @@
     let list = document.getElementById("wishList");
     let div = document.createElement("div");
     div.className = "wishItem";
-    // Đã gộp tên và lời chúc thành 1 dòng
     div.innerHTML = "<b>" + r[1] + "</b>: " + r[2];
     list.appendChild(div);
 
@@ -467,9 +520,8 @@
       list.style.transition = "none";
       list.style.transform = "translateY(0)";
     }, 600);
-  }, 2200);
+  }, 2500);
 
-  /* Timeline Slide */
   var galleryImages = [
     "https://picsum.photos/900/600?1",
     "https://picsum.photos/900/600?2",
@@ -498,7 +550,6 @@
     document.getElementById("timelineText").innerText = timelineTexts[autoIndex];
   }, 4000);
 
-  /* Gửi lời chúc */
   function sendWish() {
     var name = document.getElementById("name").value.trim();
     var wish = document.getElementById("wish").value.trim();
