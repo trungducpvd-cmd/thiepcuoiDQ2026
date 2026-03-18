@@ -1,659 +1,513 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Wedding Invitation</title>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=280">
+  <style>
+    /* Reset CSS cơ bản */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-<title>Wedding Invitation</title>
+    body {
+      background: #e0e0e0;
+      display: flex;
+      justify-content: center;
+      font-family: system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+    }
 
-<style>
+    #app-container {
+      width: 100%;
+      max-width: 430px;
+      background: #fff3f7;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+      box-shadow: 0 0 25px rgba(0,0,0,0.15);
+      text-align: center;
+    }
 
-body{
-margin:0;
-font-family:system-ui;
-background:#fff3f7;
-text-align:center;
-overflow-x:hidden;
-}
+    section {
+      padding: 50px 20px;
+      margin: auto;
+    }
 
-/* mobile friendly */
+    /* --- HERO --- */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #ffd1dc, #ffe8f0);
+      padding: 20px;
+    }
 
-section{
-padding:60px 20px;
-max-width:900px;
-margin:auto;
-}
+    .hero h1 {
+      font-size: 38px;
+      color: #c2185b;
+      margin: 15px 0;
+      letter-spacing: 2px;
+    }
 
-/* hero */
+    .flowerDecor {
+      font-size: 26px;
+      animation: float 4s infinite ease-in-out;
+    }
 
-.hero{
-height:100vh;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-background:linear-gradient(135deg,#ffd1dc,#ffe8f0);
-}
+    @keyframes float {
+      0% { transform: translateY(0) }
+      50% { transform: translateY(-8px) }
+      100% { transform: translateY(0) }
+    }
 
-.hero h1{
-font-size:56px;
-color:#c2185b;
-margin:10px 0;
-letter-spacing:3px;
-}
+    .names {
+      font-size: 26px;
+      font-weight: bold;
+      color: #c2185b;
+      line-height: 1.4;
+    }
 
-.flowerDecor{
-font-size:26px;
-animation:float 4s infinite ease-in-out;
-}
+    .date {
+      font-size: 16px;
+      margin-top: 10px;
+      font-weight: 500;
+    }
 
-@keyframes float{
-0%{transform:translateY(0)}
-50%{transform:translateY(-8px)}
-100%{transform:translateY(0)}
-}
+    #countdown {
+      font-size: 18px;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #ad1457;
+    }
 
-.names{
-font-size:20px;
-font-weight:bold;
-color:#c2185b;
-}
+    .inviteNote {
+      margin-top: 25px;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(8px);
+      padding: 16px;
+      border-radius: 12px;
+      width: 100%;
+      font-size: 14px;
+      line-height: 1.6;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
 
-.date{
-font-size:14px;
-margin-top:8px;
-}
+    /* --- ENVELOPE --- */
+    #envelopeWrap {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #ffdce6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
 
-/* envelope */
+    .envelope {
+      width: 260px;
+      height: 160px;
+      background: #e57373;
+      cursor: pointer;
+      position: relative;
+      border-radius: 4px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
 
-#envelopeWrap{
-position:fixed;
-width:100%;
-height:100vh;
-background:#ffdce6;
-display:flex;
-align-items:center;
-justify-content:center;
-z-index:999;
-}
+    .flap {
+      position: absolute;
+      border-left: 130px solid transparent;
+      border-right: 130px solid transparent;
+      border-bottom: 80px solid #ef9a9a;
+      top: -80px;
+    }
 
-.envelope{
-width:260px;
-height:160px;
-background:#e57373;
-cursor:pointer;
-position:relative;
-}
+    /* --- MAP BUTTONS --- */
+    h2 {
+      color: #c2185b;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
 
-.flap{
-position:absolute;
-border-left:130px solid transparent;
-border-right:130px solid transparent;
-border-bottom:80px solid #ef9a9a;
-top:-80px;
-}
+    .mapButtons, .timelineButtons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
 
-/* countdown */
+    .mapButtons button, .timelineButtons button {
+      flex: 1 1 45%;
+      padding: 12px 10px;
+      border: none;
+      border-radius: 8px;
+      background: #c2185b;
+      color: white;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
 
-#countdown{
-font-size:14px;
-margin-top:15px;
-}
+    .mapButtons button:active, .timelineButtons button:active {
+      background: #ad1457;
+    }
 
-/* map */
+    .mapContainer {
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      background: #fff;
+    }
 
+    /* --- TIMELINE --- */
+    .galleryWrap {
+      position: relative;
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
 
+    .galleryWrap img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      height: 250px;
+    }
 
-/*changmap 2*/
-.mapButtons{
-margin-bottom:15px;
-}
+    .timelineText {
+      position: absolute;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.6);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      white-space: nowrap;
+    }
 
-.mapButtons button{
-margin:5px;
-padding:10px 14px;
-border:none;
-border-radius:8px;
-background:#c2185b;
-color:white;
-font-size:10px;
-cursor:pointer;
-}
+    /* --- WISHES --- */
+    #wishWall {
+      height: 140px;
+      overflow: hidden;
+      width: 100%;
+      position: relative;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 12px;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
 
-.mapContainer{
-max-width:700px;
-margin:auto;
-border-radius:12px;
-overflow:hidden;
-box-shadow:0 6px 20px rgba(0,0,0,0.15);
-}
+    #wishList {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      right: 10px;
+    }
 
-/* timeline */
+    .wishItem {
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(6px);
+      border-radius: 10px;
+      padding: 8px 12px;
+      margin: 5px 0;
+      font-size: 13px;
+      text-align: left;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+    }
 
-.timeline{
-text-align:left;
-max-width:500px;
-margin:auto;
-}
+    .wishItem b {
+      color: #c2185b;
+      margin-bottom: 2px;
+    }
 
-.timeline div{
-margin:10px 0;
-padding-left:10px;
-border-left:3px solid #c2185b;
-}
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
 
-/* gallery */
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+      font-family: inherit;
+      font-size: 14px;
+    }
 
-.gallery{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-gap:10px;
-}
+    textarea {
+      resize: none;
+      height: 80px;
+    }
 
-.gallery img{
-width:100%;
-border-radius:10px;
-}
+    button.send {
+      padding: 14px;
+      border: none;
+      background: #c2185b;
+      color: white;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
-/* chat wishes */
+    /* --- FALLING --- */
+    .fall {
+      position: absolute;
+      top: -20px;
+      font-size: 20px;
+      animation: fall linear forwards;
+      z-index: 10;
+      pointer-events: none;
+    }
 
-#wishWall{
-height:120px;
-overflow:hidden;
-max-width:420px;
-margin:auto;
-position:relative;
-}
-
-#wishList{
-position:absolute;
-bottom:0;
-width:100%;
-}
-
-.wishItem{
-background:rgba(255,255,255,0.65);
-backdrop-filter:blur(6px);
-border-radius:16px;
-padding:5px 10px;
-margin:3px 0;
-font-size:10px;
-line-height:1.4;
-white-space:nowrap;
-overflow:hidden;
-text-overflow:ellipsis;
-}
-
-/* form */
-
-input,textarea{
-width:90%;
-padding:10px;
-margin-top:10px;
-border-radius:6px;
-border:1px solid #ccc;
-}
-
-button.send{
-margin-top:10px;
-padding:10px 16px;
-border:none;
-background:#c2185b;
-color:white;
-border-radius:6px;
-}
-
-/* note */
-.inviteNote{
-margin-top:20px;
-background:rgba(255,255,255,0.6);
-backdrop-filter:blur(8px);
-padding:16px;
-border-radius:12px;
-max-width:400px;
-font-size:12px;
-line-height:1.6;
-}
-/* timeline */
-.timelineButtons button{
-margin:6px;
-padding:10px 14px;
-border:none;
-border-radius:8px;
-background:#c2185b;
-color:white;
-}
-
-.galleryWrap{
-position:relative;
-max-width:700px;
-margin:auto;
-}
-
-.galleryWrap img{
-width:100%;
-border-radius:12px;
-}
-
-.timelineText{
-position:absolute;
-bottom:20px;
-left:50%;
-transform:translateX(-50%);
-background:rgba(0,0,0,0.5);
-color:white;
-padding:10px 16px;
-border-radius:10px;
-}
-
-/* falling */
-
-.fall{
-position:fixed;
-top:-10px;
-font-size:16px;
-animation:fall linear forwards;
-}
-
-@keyframes fall{
-to{transform:translateY(110vh)}
-}
-
-/* force mobile layout */
-
-body{
-margin:0;
-background:#f5f5f5;
-display:flex;
-justify-content:center;
-}
-
-.container{
-max-width:430px;
-width:100%;
-background:white;
-min-height:100vh;
-box-shadow:0 0 25px rgba(0,0,0,0.15);
-}
-
-</style>
-
+    @keyframes fall {
+      to { transform: translateY(110vh) rotate(360deg); }
+    }
+  </style>
 </head>
 
 <body>
 
-<div id="envelopeWrap">
+<div id="app-container">
 
-<div class="envelope" onclick="openInvite()">
-<div class="flap"></div>
-</div>
+  <div id="envelopeWrap">
+    <div class="envelope" onclick="openInvite()">
+      <div class="flap"></div>
+    </div>
+  </div>
 
-</div>
+  <div id="main" style="display:none">
+    
+    <section class="hero">
+      <div class="flowerDecor">🌸 🌸 🌸</div>
+      <h1>Wedding Invitation</h1>
+      
+      <div class="names">Trần Trung Đức</div>
+      <div class="names" style="font-size: 20px; margin: 5px 0;">❤️</div>
+      <div class="names">Nguyễn Thị Diễm Quỳnh</div>
+      
+      <div class="date">25/04/2026 — 18:00</div>
+      <div id="countdown">Đang tải đếm ngược...</div>
+      
+      <div class="inviteNote">
+        <p>Trân trọng kính mời dự tiệc báo hỉ của chúng tôi tại:</p>
+        <p style="margin: 10px 0;">
+          <b>Nhà hàng tiệc cưới Diamond Palace II</b><br>
+          Sảnh <b>Saphire 1</b>, tầng 2
+        </p>
+        <p>
+          Đón khách <b>18:00</b> — Khai tiệc <b>19:00</b>
+        </p>
+      </div>
+    </section>
 
-<div id="main" style="display:none">
+    <section>
+      <h2>Địa điểm tiệc cưới</h2>
+      <div class="mapButtons">
+        <button onclick="changeMap(1)">Tiệc TP.HCM<br><small>25/04/2026</small></button>
+        <button onclick="changeMap(2)">Lễ Quảng Ngãi<br><small>18/04/2026</small></button>
+        <button onclick="changeMap(3)">Lễ Phan Thiết<br><small>11/04/2026</small></button>
+      </div>
+      <div class="mapContainer">
+        <iframe id="mapFrame"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4848.185411235426!2d106.6430599!3d10.7825433!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752eb20824063f%3A0x1e05528343d1b39b!2zRGlhbW9uZCBQbGFjZSBJSSAtIMOCdSBDxqEgLSBUcnVuZyB0w6JtIEjhu5lpIG5naOG7iyAtIFRp4buHYyBjxrDhu5tp!5e1!3m2!1svi!2s!4v1773722075917!5m2!1svi!2s"
+          width="100%" height="320"
+          style="border:0"
+          loading="lazy">
+        </iframe>
+      </div>
+    </section>
 
-<section class="hero">
+    <section>
+      <h2>Hành trình tình yêu</h2>
+      <div class="timelineButtons">
+        <button onclick="showTimeline(0)">2022<br><small>Quen nhau</small></button>
+        <button onclick="showTimeline(1)">2023<br><small>Hẹn hò</small></button>
+        <button onclick="showTimeline(2)">2026<br><small>Cưới</small></button>
+      </div>
+      <div class="galleryWrap">
+        <img id="galleryImg" src="https://picsum.photos/900/600?1" alt="Hình cưới">
+        <div class="timelineText" id="timelineText">2022 – Lần đầu quen nhau</div>
+      </div>
+    </section>
 
-<div class="flowerDecor">🌸 🌸 🌸</div>
+    <section>
+      <h2>Lời chúc</h2>
+      <div id="wishWall">
+        <div id="wishList"></div>
+      </div>
+      
+      <div class="form-group">
+        <input id="name" placeholder="Tên của bạn">
+        <textarea id="wish" placeholder="Viết lời chúc"></textarea>
+        <button class="send" onclick="sendWish()">Gửi Lời Chúc 💌</button>
+      </div>
+    </section>
 
-<h1>Wedding</h1>
-<h1>Invitation</h1>
+  </div>
 
-<div class="names">
-Trần Trung Đức
-</div>
-
-<div class="names">
-❤️ 
-</div>
-<div class="names">
-Nguyễn Thị Diễm Quỳnh
-</div>
-
-
-<div class="date">
-25/04/2026 — 18:00
-</div>
-
-<div id="countdown"></div>
-
-<div class="inviteNote">
-
-<p>
-Trân trọng kính mời dự tiệc báo hỉ của chúng tôi tại:
-</p>
-
-<p>
-<b>Nhà hàng tiệc cưới Diamond Palace II</b><br>
-Sảnh <b>Saphire 1</b>, tầng 2
-</p>
-
-<p>
-Thời gian: <br>
-Đón khách <b>18:00</b> — Khai tiệc <b>19:00</b>
-</p>
-
-</div>
-
-</section>
-
-
-<section>
-
-<h2>Địa điểm tiệc cưới</h2>
-
-<div class="mapButtons">
-
-<button onclick="changeMap(1)">Tiệc TP.HCM 25/04/2026</button>
-
-<button onclick="changeMap(2)">Lễ Quảng Ngãi 18/04/2026</button>
-
-<button onclick="changeMap(3)">Lễ Phan Thiết 11/04/2026</button>
-
-</div>
-
-<div class="mapContainer">
-
-<iframe id="mapFrame"
-src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4848.185411235426!2d106.6430599!3d10.7825433!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752eb20824063f%3A0x1e05528343d1b39b!2zRGlhbW9uZCBQbGFjZSBJSSAtIMOCdSBDxqEgLSBUcnVuZyB0w6JtIEjhu5lpIG5naOG7iyAtIFRp4buHYyBjxrDhu5tp!5e1!3m2!1svi!2s!4v1773722075917!5m2!1svi!2s"
-width="100%" height="320"
-style="border:0"
-loading="lazy">
-</iframe>
-
-</div>
-
-</section>
-
-
-<section>
-
-<h2>Hành trình tình yêu</h2>
-
-<div class="timelineButtons">
-
-<button onclick="showTimeline(0)">2022 – Quen nhau</button>
-
-<button onclick="showTimeline(1)">2023 – Hẹn hò</button>
-
-<button onclick="showTimeline(2)">2026 – Cưới</button>
+  <audio id="music" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3">
+  </audio>
 
 </div>
-
-<div class="galleryWrap">
-
-<img id="galleryImg" src="https://picsum.photos/900/600?1">
-
-<div class="timelineText" id="timelineText">
-
-2022 – Lần đầu quen nhau
-
-</div>
-
-</div>
-
-</section>
-
-
-
-<section>
-
-<h2>Lời chúc</h2>
-
-<div id="wishWall">
-<div id="wishList"></div>
-</div>
-
-<h3>Gửi lời chúc</h3>
-
-<input id="name" placeholder="Tên của bạn">
-
-<textarea id="wish" placeholder="Viết lời chúc"></textarea>
-
-<button class="send" onclick="sendWish()">Gửi</button>
-
-</section>
-
-</div>
-
-<audio id="music" loop>
-
-<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3">
-
-</audio>
 
 <script>
-
-var scriptURL="https://script.google.com/macros/s/AKfycbxxEWDSGCb75NJLCtmpY2fWyqseWokictFnhc1OThQ6o_JkHL9QpOa2A2xRn_JFliNaFg/exec";
-
-var wishes=[];
-
-/* open invite */
-
-function openInvite(){
-
-document.getElementById("envelopeWrap").style.display="none";
-
-document.getElementById("main").style.display="block";
-
-document.getElementById("music").play();
-
-startFlowers();
-
-loadWishes();
-
-}
-
-/* flowers */
-
-function startFlowers(){
-
-setInterval(()=>{
-
-let el=document.createElement("div");
-
-el.className="fall";
-
-el.innerHTML=Math.random()>0.5?"🌸":"❤️";
-
-el.style.left=Math.random()*100+"vw";
-
-el.style.animationDuration=(4+Math.random()*4)+"s";
-
-document.body.appendChild(el);
-
-setTimeout(()=>el.remove(),8000);
-
-},400);
-
-}
-
-/* countdown */
-
-var weddingDate=new Date("April 25 2026 18:00:00").getTime();
-
-setInterval(()=>{
-
-var now=new Date().getTime();
-
-var d=weddingDate-now;
-
-var days=Math.floor(d/(1000*60*60*24));
-
-var hours=Math.floor((d%(1000*60*60*24))/(1000*60*60));
-
-var minutes=Math.floor((d%(1000*60*60))/(1000*60));
-
-var seconds=Math.floor((d%(1000*60))/1000);
-
-document.getElementById("countdown").innerHTML=
-
-days+" ngày "+
-hours+" giờ "+
-minutes+" phút "+
-seconds+" giây";
-
-},1000);
-
-/* map */
-
-function changeMap(n){
-
-var maps=[
-
-`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4848.185411235426!2d106.6430599!3d10.7825433!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752eb20824063f%3A0x1e05528343d1b39b!2zRGlhbW9uZCBQbGFjZSBJSSAtIMOCdSBDxqEgLSBUcnVuZyB0w6JtIEjhu5lpIG5naOG7iyAtIFRp4buHYyBjxrDhu5tp!5e1!3m2!1svi!2s!4v1773722075917!5m2!1svi!2s`,
-
-`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4768.382936870301!2d108.85403987595934!3d14.944820685583386!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3168ffe9e33bd345%3A0xc02c39f6ab2eb5f3!2sPHI%20HUNG%20Building%20Contractors!5e1!3m2!1svi!2s!4v1773722120133!5m2!1svi!2s`,
-
-`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4845.969884909954!2d108.07898867590418!3d10.919171989238402!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3176830ec2aa8465%3A0xf17c7c48d1a2ecec!2zVHJ1bmcgVMOibSBT4buxIEtp4buHbiBUaeG7h2MgQ8aw4bubaSBJbnZpdGEgUGFsYWNlIFBoYW4gVGhp4bq_dA!5e1!3m2!1svi!2s!4v1773722247661!5m2!1svi!2s`
-
-];
-
-document.getElementById("mapFrame").src=maps[n-1];
-
-}
-
-/* load wishes */
-
-function loadWishes(){
-
-fetch(scriptURL)
-
-.then(r=>r.json())
-
-.then(data=>{
-
-wishes=data;
-
-});
-
-}
-
-/* chat livestream */
-
-setInterval(()=>{
-
-if(wishes.length==0) return;
-
-let r=wishes[Math.floor(Math.random()*wishes.length)];
-
-let list=document.getElementById("wishList");
-
-let div=document.createElement("div");
-
-div.className="wishItem";
-
-div.innerHTML="<b>"+r[1]+"</b>: "+r[2];
-
-list.appendChild(div);
-
-/* giữ tối đa 4 dòng */
-
-while(list.children.length>4){
-
-list.removeChild(list.children[0]);
-
-}
-
-/* scroll mượt */
-
-list.style.transition="transform 0.6s ease";
-
-list.style.transform="translateY(-22px)";
-
-setTimeout(()=>{
-
-list.style.transition="none";
-
-list.style.transform="translateY(0)";
-
-},600);
-
-},2200);
-
-/* js timeline slideshow */
-var galleryImages=[
-
-"https://picsum.photos/900/600?1",
-"https://picsum.photos/900/600?2",
-"https://picsum.photos/900/600?3"
-
-];
-
-var timelineTexts=[
-
-"2022 – Lần đầu quen nhau",
-"2023 – Bắt đầu hẹn hò",
-"2026 – Chính thức về chung một nhà ❤️"
-
-];
-
-var autoIndex=0;
-var autoPlay=true;
-
-function showTimeline(i){
-
-autoPlay=false;
-
-document.getElementById("galleryImg").src=galleryImages[i];
-
-document.getElementById("timelineText").innerText=timelineTexts[i];
-
-}
-
-/* slideshow */
-
-setInterval(()=>{
-
-if(!autoPlay)return;
-
-autoIndex++;
-
-if(autoIndex>=galleryImages.length)autoIndex=0;
-
-document.getElementById("galleryImg").src=galleryImages[autoIndex];
-
-document.getElementById("timelineText").innerText=timelineTexts[autoIndex];
-
-},4000);
-
-
-/* send wish */
-
-function sendWish(){
-
-var name=document.getElementById("name").value;
-
-var wish=document.getElementById("wish").value;
-
-fetch(scriptURL,{
-
-method:"POST",
-
-body:new URLSearchParams({
-
-name:name,
-
-message:wish
-
-})
-
-}).then(()=>{
-
-loadWishes();
-
-document.getElementById("name").value="";
-
-document.getElementById("wish").value="";
-
-});
-
-}
-
+  var scriptURL = "https://script.google.com/macros/s/AKfycbxxEWDSGCb75NJLCtmpY2fWyqseWokictFnhc1OThQ6o_JkHL9QpOa2A2xRn_JFliNaFg/exec";
+  var wishes = [];
+  var appContainer = document.getElementById("app-container");
+
+  /* Mở thiệp */
+  function openInvite() {
+    document.getElementById("envelopeWrap").style.display = "none";
+    document.getElementById("main").style.display = "block";
+    document.getElementById("music").play().catch(e => console.log("Trình duyệt chặn autoplay audio"));
+    startFlowers();
+    loadWishes();
+  }
+
+  /* Hoa rơi */
+  function startFlowers() {
+    setInterval(() => {
+      let el = document.createElement("div");
+      el.className = "fall";
+      el.innerHTML = Math.random() > 0.5 ? "🌸" : "❤️";
+      el.style.left = Math.random() * 100 + "%"; 
+      el.style.animationDuration = (4 + Math.random() * 4) + "s";
+      appContainer.appendChild(el);
+      setTimeout(() => el.remove(), 8000);
+    }, 400);
+  }
+
+  /* Đếm ngược */
+  var weddingDate = new Date("April 25 2026 18:00:00").getTime();
+  setInterval(() => {
+    var now = new Date().getTime();
+    var d = weddingDate - now;
+    if(d < 0) {
+      document.getElementById("countdown").innerHTML = "Đã đến giờ G!";
+      return;
+    }
+    var days = Math.floor(d / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((d % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((d % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((d % (1000 * 60)) / 1000);
+    
+    document.getElementById("countdown").innerHTML = 
+      days + " ngày " + hours + " giờ " + minutes + " phút " + seconds + " giây";
+  }, 1000);
+
+  /* Bản đồ - Đã giữ nguyên logic gốc của bạn */
+  function changeMap(n) {
+    var maps = [
+      `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4848.185411235426!2d106.6430599!3d10.7825433!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752eb20824063f%3A0x1e05528343d1b39b!2zRGlhbW9uZCBQbGFjZSBJSSAtIMOCdSBDxqEgLSBUcnVuZyB0w6JtIEjhu5lpIG5naOG7iyAtIFRp4buHYyBjxrDhu5tp!5e1!3m2!1svi!2s!4v1773722075917!5m2!1svi!2s`,
+      `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4768.382936870301!2d108.85403987595934!3d14.944820685583386!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3168ffe9e33bd345%3A0xc02c39f6ab2eb5f3!2sPHI%20HUNG%20Building%20Contractors!5e1!3m2!1svi!2s!4v1773722120133!5m2!1svi!2s`,
+      `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4845.969884909954!2d108.07898867590418!3d10.919171989238402!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3176830ec2aa8465%3A0xf17c7c48d1a2ecec!2zVHJ1bmcgVMOibSBT4buxIEtp4buHbiBUaeG7h2MgQ8aw4bubaSBJbnZpdGEgUGFsYWNlIFBoYW4gVGhp4bq_dA!5e1!3m2!1svi!2s!4v1773722247661!5m2!1svi!2s`
+    ];
+    document.getElementById("mapFrame").src = maps[n - 1];
+  }
+
+  /* Lời chúc */
+  function loadWishes() {
+    fetch(scriptURL)
+      .then(r => r.json())
+      .then(data => { wishes = data; })
+      .catch(e => console.log("Chưa có data hoặc lỗi kết nối"));
+  }
+
+  setInterval(() => {
+    if (wishes.length == 0) return;
+    let r = wishes[Math.floor(Math.random() * wishes.length)];
+    let list = document.getElementById("wishList");
+    let div = document.createElement("div");
+    div.className = "wishItem";
+    div.innerHTML = "<b>" + r[1] + "</b><span>" + r[2] + "</span>";
+    list.appendChild(div);
+
+    while (list.children.length > 3) {
+      list.removeChild(list.children[0]);
+    }
+
+    list.style.transition = "transform 0.6s ease";
+    list.style.transform = "translateY(-15px)";
+    setTimeout(() => {
+      list.style.transition = "none";
+      list.style.transform = "translateY(0)";
+    }, 600);
+  }, 2200);
+
+  /* Timeline Slide */
+  var galleryImages = [
+    "https://picsum.photos/900/600?1",
+    "https://picsum.photos/900/600?2",
+    "https://picsum.photos/900/600?3"
+  ];
+  var timelineTexts = [
+    "2022 – Lần đầu quen nhau",
+    "2023 – Bắt đầu hẹn hò",
+    "2026 – Chính thức về chung một nhà ❤️"
+  ];
+
+  var autoIndex = 0;
+  var autoPlay = true;
+
+  function showTimeline(i) {
+    autoPlay = false;
+    document.getElementById("galleryImg").src = galleryImages[i];
+    document.getElementById("timelineText").innerText = timelineTexts[i];
+  }
+
+  setInterval(() => {
+    if (!autoPlay) return;
+    autoIndex++;
+    if (autoIndex >= galleryImages.length) autoIndex = 0;
+    document.getElementById("galleryImg").src = galleryImages[autoIndex];
+    document.getElementById("timelineText").innerText = timelineTexts[autoIndex];
+  }, 4000);
+
+  /* Gửi lời chúc */
+  function sendWish() {
+    var name = document.getElementById("name").value.trim();
+    var wish = document.getElementById("wish").value.trim();
+    
+    if(!name || !wish) {
+      alert("Vui lòng nhập đầy đủ tên và lời chúc nhé!");
+      return;
+    }
+
+    let btn = document.querySelector(".send");
+    btn.innerText = "Đang gửi...";
+    btn.disabled = true;
+
+    fetch(scriptURL, {
+      method: "POST",
+      body: new URLSearchParams({ name: name, message: wish })
+    }).then(() => {
+      loadWishes();
+      document.getElementById("name").value = "";
+      document.getElementById("wish").value = "";
+      btn.innerText = "Gửi Lời Chúc 💌";
+      btn.disabled = false;
+      alert("Cảm ơn lời chúc của bạn!");
+    }).catch(() => {
+      btn.innerText = "Gửi Lời Chúc 💌";
+      btn.disabled = false;
+    });
+  }
 </script>
 
 </body>
-
 </html>
