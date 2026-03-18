@@ -19,6 +19,7 @@
       justify-content: center;
       font-family: system-ui, -apple-system, sans-serif;
       min-height: 100vh;
+      overflow-x: hidden; /* Tránh thanh cuộn ngang do hiệu ứng rơi */
     }
 
     #app-container {
@@ -27,7 +28,6 @@
       background: #fff3f7;
       min-height: 100vh;
       position: relative;
-      overflow-x: hidden;
       box-shadow: 0 0 25px rgba(0,0,0,0.15);
       text-align: center;
     }
@@ -127,24 +127,14 @@
       top: -80px;
     }
 
-    /* --- MAP BUTTONS --- */
+    /* --- BUTTONS CHUNG --- */
     h2 {
       color: #c2185b;
       margin-bottom: 20px;
       font-size: 24px;
     }
 
-    .mapButtons, .timelineButtons {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 8px;
-      margin-bottom: 20px;
-    }
-
-    .mapButtons button, .timelineButtons button {
-      flex: 1 1 45%;
-      padding: 12px 10px;
+    button {
       border: none;
       border-radius: 8px;
       background: #c2185b;
@@ -154,8 +144,26 @@
       transition: background 0.2s;
     }
 
-    .mapButtons button:active, .timelineButtons button:active {
+    button:active {
       background: #ad1457;
+    }
+
+    /* --- MAP BUTTONS (Custom Layout) --- */
+    .mapButtons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .btn-top {
+      width: 100%;
+      padding: 12px 10px;
+    }
+
+    .btn-bottom {
+      flex: 1; /* Tự động chia đôi không gian */
+      padding: 12px 10px;
     }
 
     .mapContainer {
@@ -166,7 +174,20 @@
       background: #fff;
     }
 
-    /* --- TIMELINE --- */
+    /* --- TIMELINE BUTTONS --- */
+    .timelineButtons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .timelineButtons button {
+      flex: 1 1 30%;
+      padding: 12px 5px;
+    }
+
     .galleryWrap {
       position: relative;
       width: 100%;
@@ -218,18 +239,20 @@
       background: rgba(255,255,255,0.85);
       backdrop-filter: blur(6px);
       border-radius: 10px;
-      padding: 8px 12px;
+      padding: 10px 12px;
       margin: 5px 0;
       font-size: 13px;
       text-align: left;
       box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-      display: flex;
-      flex-direction: column;
+      
+      /* Cắt chữ thành 1 dòng + hiển thị dấu ... */
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .wishItem b {
       color: #c2185b;
-      margin-bottom: 2px;
     }
 
     .form-group {
@@ -254,23 +277,18 @@
 
     button.send {
       padding: 14px;
-      border: none;
-      background: #c2185b;
-      color: white;
-      border-radius: 8px;
       font-size: 16px;
       font-weight: bold;
-      cursor: pointer;
     }
 
-    /* --- FALLING --- */
+    /* --- FALLING (TOÀN MÀN HÌNH) --- */
     .fall {
-      position: absolute;
+      position: fixed; /* Rơi trên toàn bộ web (fixed) */
       top: -20px;
       font-size: 20px;
       animation: fall linear forwards;
-      z-index: 10;
-      pointer-events: none;
+      z-index: 1000; /* Nằm đè lên cả nền ngoài */
+      pointer-events: none; /* Tránh click nhầm vào hoa */
     }
 
     @keyframes fall {
@@ -317,9 +335,9 @@
     <section>
       <h2>Địa điểm tiệc cưới</h2>
       <div class="mapButtons">
-        <button onclick="changeMap(1)">Tiệc TP.HCM<br><small>25/04/2026</small></button>
-        <button onclick="changeMap(2)">Lễ Quảng Ngãi<br><small>18/04/2026</small></button>
-        <button onclick="changeMap(3)">Lễ Phan Thiết<br><small>11/04/2026</small></button>
+        <button class="btn-top" onclick="changeMap(1)">Tiệc TP.HCM — <small>25/04/2026</small></button>
+        <button class="btn-bottom" onclick="changeMap(2)">Lễ Quảng Ngãi<br><small>18/04</small></button>
+        <button class="btn-bottom" onclick="changeMap(3)">Lễ Phan Thiết<br><small>11/04</small></button>
       </div>
       <div class="mapContainer">
         <iframe id="mapFrame"
@@ -368,7 +386,6 @@
 <script>
   var scriptURL = "https://script.google.com/macros/s/AKfycbxxEWDSGCb75NJLCtmpY2fWyqseWokictFnhc1OThQ6o_JkHL9QpOa2A2xRn_JFliNaFg/exec";
   var wishes = [];
-  var appContainer = document.getElementById("app-container");
 
   /* Mở thiệp */
   function openInvite() {
@@ -379,15 +396,17 @@
     loadWishes();
   }
 
-  /* Hoa rơi */
+  /* Hoa rơi toàn màn hình */
   function startFlowers() {
     setInterval(() => {
       let el = document.createElement("div");
       el.className = "fall";
       el.innerHTML = Math.random() > 0.5 ? "🌸" : "❤️";
-      el.style.left = Math.random() * 100 + "%"; 
+      // Rải ngẫu nhiên trên toàn bộ chiều rộng trình duyệt (100vw)
+      el.style.left = Math.random() * 100 + "vw"; 
       el.style.animationDuration = (4 + Math.random() * 4) + "s";
-      appContainer.appendChild(el);
+      // Gắn trực tiếp vào thẻ body để thoát khỏi app-container
+      document.body.appendChild(el);
       setTimeout(() => el.remove(), 8000);
     }, 400);
   }
@@ -410,7 +429,7 @@
       days + " ngày " + hours + " giờ " + minutes + " phút " + seconds + " giây";
   }, 1000);
 
-  /* Bản đồ - Đã giữ nguyên logic gốc của bạn */
+  /* Bản đồ */
   function changeMap(n) {
     var maps = [
       `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4848.185411235426!2d106.6430599!3d10.7825433!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752eb20824063f%3A0x1e05528343d1b39b!2zRGlhbW9uZCBQbGFjZSBJSSAtIMOCdSBDxqEgLSBUcnVuZyB0w6JtIEjhu5lpIG5naOG7iyAtIFRp4buHYyBjxrDhu5tp!5e1!3m2!1svi!2s!4v1773722075917!5m2!1svi!2s`,
@@ -434,10 +453,11 @@
     let list = document.getElementById("wishList");
     let div = document.createElement("div");
     div.className = "wishItem";
-    div.innerHTML = "<b>" + r[1] + "</b><span>" + r[2] + "</span>";
+    // Đã gộp tên và lời chúc thành 1 dòng
+    div.innerHTML = "<b>" + r[1] + "</b>: " + r[2];
     list.appendChild(div);
 
-    while (list.children.length > 3) {
+    while (list.children.length > 4) {
       list.removeChild(list.children[0]);
     }
 
