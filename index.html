@@ -44,16 +44,25 @@
     }
 
     /* --- HERO --- */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      /* Nền gradient lãng mạn hơn */
-      background: linear-gradient(135deg, #ffe4e1, #fff0f5);
-      padding: 20px;
-    }
+        /* hero với ảnh nền */
+.hero {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* Giữ lại màu nền dự phòng trong lúc ảnh đang load */
+  background-color: #ffd1dc; 
+  
+  /* ĐÂY LÀ ĐOẠN QUAN TRỌNG NHẤT: Gọi ảnh làm nền */
+  /* Nhớ thay 'anh-nen-hero.jpg' bằng tên file ảnh thật của bạn */
+  background-image: url('./images/A (6).jpg');
+  
+  /* Các thuộc tính tối ưu cho ảnh nền */
+  background-size: cover; /* Ảnh sẽ tự động co giãn để che kín toàn bộ khung, không bị méo */
+  background-position: center; /* Ảnh sẽ được căn giữa, không bị mất gốc đẹp */
+  background-repeat: no-repeat; /* Không để ảnh lặp lại thành ô cờ */
+}
 
     .hero h1 {
       font-family: 'Dancing Script', cursive;
