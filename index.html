@@ -44,24 +44,34 @@
     }
 
     /* --- HERO --- */
-        /* hero với ảnh nền */
+ /* --- HERO SECTION CÓ ẢNH NỀN TRONG SUỐT --- */
 .hero {
-  height: 100vh;
+  position: relative; /* Bắt buộc phải có để giữ ảnh nền ở trong khung */
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* Giữ lại màu nền dự phòng trong lúc ảnh đang load */
-  background-color: #ffd1dc; 
+  background-color: #ffe4e1; /* Màu nền sẽ lộ ra khi ảnh bị làm mờ (có thể đổi màu khác) */
+  padding: 20px;
+  z-index: 1; /* Giữ cho chữ luôn nổi lên trên */
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
   
-  /* ĐÂY LÀ ĐOẠN QUAN TRỌNG NHẤT: Gọi ảnh làm nền */
-  /* Nhớ thay 'anh-nen-hero.jpg' bằng tên file ảnh thật của bạn */
-  background-image: url('./images/A (6).jpg');
+  /* Đổi tên ảnh của bạn ở đây */
+  background-image: url('./images/A (6)'); 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   
-  /* Các thuộc tính tối ưu cho ảnh nền */
-  background-size: cover; /* Ảnh sẽ tự động co giãn để che kín toàn bộ khung, không bị méo */
-  background-position: center; /* Ảnh sẽ được căn giữa, không bị mất gốc đẹp */
-  background-repeat: no-repeat; /* Không để ảnh lặp lại thành ô cờ */
+  /* ĐIỀU CHỈNH ĐỘ TRONG SUỐT Ở ĐÂY */
+  opacity: 0.4; /* 0.4 tương đương 40%. 1 là rõ nét 100%, 0 là tàng hình */
+  
+  z-index: -1; /* Đẩy ảnh lùi về phía sau chữ */
 }
 
     .hero h1 {
