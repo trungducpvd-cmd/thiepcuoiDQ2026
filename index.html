@@ -458,7 +458,6 @@
     setInterval(() => {
       let el = document.createElement("div");
       el.className = "fall";
-      // Trộn nhiều icon lãng mạn
       let icons = ["🐉", "❤️", "✨", "🕊️", "🐃"];
       el.innerHTML = icons[Math.floor(Math.random() * icons.length)];
       el.style.left = Math.random() * 100 + "vw"; 
@@ -522,16 +521,13 @@
     }, 600);
   }, 2500);
 
-  /* --- BẮT ĐẦU PHẦN TIMELINE MỚI --- */
-  
-  // Nhóm 5-8 ảnh của bạn vào 3 giai đoạn
+  /* --- TIMELINE MỚI: HIỂN THỊ ẢNH NGẪU NHIÊN THEO MỐC --- */
   var timelineData = [
     {
       text: "2022 – Lần đầu quen nhau",
       images: [
         "./images/A (1).jpg", 
         "./images/A (2).jpg"
-        // Bạn có thể thêm link ảnh khác của năm 2022 vào đây
       ]
     },
     {
@@ -539,14 +535,12 @@
       images: [
         "./images/A (3).jpg",
         "./images/A (4).jpg"
-        // Bạn có thể thêm link ảnh khác của năm 2023 vào đây
       ]
     },
     {
       text: "2026 – Chính thức về chung một nhà ❤️",
       images: [
-        ./images/A (5).jpg
-        // Bạn có thể thêm link ảnh cưới năm 2026 vào đây
+        "./images/A (5).jpg"
       ]
     }
   ];
@@ -554,33 +548,36 @@
   var currentPeriod = 0;
   var autoPlay = true;
 
-  // Hàm chọn ngẫu nhiên 1 ảnh trong giai đoạn tương ứng
   function displayRandomImage(periodIndex) {
     let data = timelineData[periodIndex];
-    // Thuật toán bốc thăm ngẫu nhiên 1 link ảnh trong mảng
     let randomImg = data.images[Math.floor(Math.random() * data.images.length)];
     
-    document.getElementById("galleryImg").src = randomImg;
-    document.getElementById("timelineText").innerText = data.text;
+    let imgEl = document.getElementById("galleryImg");
+    
+    // Hiệu ứng mờ dần (Fade-in / Fade-out)
+    imgEl.style.transition = "opacity 0.4s ease-in-out";
+    imgEl.style.opacity = 0;
+    
+    setTimeout(() => {
+        imgEl.src = randomImg;
+        document.getElementById("timelineText").innerText = data.text;
+        imgEl.style.opacity = 1;
+    }, 400);
   }
 
-  // Khi khách bấm nút
   function showTimeline(i) {
-    autoPlay = false; // Tạm dừng tự động chuyển nếu người dùng tự bấm để xem cho kỹ
+    autoPlay = false; // Tạm dừng tự động nhảy nếu khách tự bấm
     currentPeriod = i;
     displayRandomImage(currentPeriod);
   }
 
-  // Slideshow tự động chuyển mốc thời gian sau mỗi 4 giây
   setInterval(() => {
-    if (!autoPlay) return; // Nếu khách đã tự bấm thì không tự nhảy nữa
+    if (!autoPlay) return;
     currentPeriod++;
     if (currentPeriod >= timelineData.length) currentPeriod = 0;
-    
     displayRandomImage(currentPeriod);
-  }, 4000);
-
-  /* --- KẾT THÚC PHẦN TIMELINE MỚI --- */
+  }, 4500); // 4.5 giây đổi ảnh 1 lần
+  /* --- KẾT THÚC TIMELINE MỚI --- */
 
   function sendWish() {
     var name = document.getElementById("name").value.trim();
