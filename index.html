@@ -554,7 +554,7 @@
     }, 600);
   }, 2500);
 
-  /* --- TIMELINE MỚI CẬP NHẬT --- */
+  /* --- TIMELINE LOGIC MỚI SIÊU MƯỢT --- */
   var timelineData = [
     {
       text: "2022 – Lần đầu quen nhau",
@@ -581,61 +581,75 @@
   ];
 
   var currentPeriod = 0;
-  var timelineTimer;
-  var transitionTimeout;
-  
-  // Biến này để lưu ảnh nào đang được hiển thị trên màn hình
-  // Giá trị ban đầu phải khớp với thẻ <img src="..."> ở trên HTML
+  var timelineTimer; // Biến chạy auto 5s
+  var transitionTimeout; // Biến delay để đảm bảo mượt
   var currentImageShowing = "./images/A (1).jpg"; 
 
   function displayRandomImage(periodIndex) {
     let data = timelineData[periodIndex];
     
-    // Lọc bỏ cái ảnh đang được hiển thị ra khỏi danh sách
     let availableImages = data.images.filter(img => img !== currentImageShowing);
-    
-    // Đề phòng trường hợp mốc đó chỉ có 1 ảnh, lọc xong không còn ảnh nào, ta đành lấy lại mảng gốc
     if (availableImages.length === 0) {
       availableImages = data.images;
     }
 
-    // Chọn ngẫu nhiên trong danh sách ảnh MỚI
     let randomImg = availableImages[Math.floor(Math.random() * availableImages.length)];
-    
-    // Cập nhật lại ảnh đang hiển thị cho lần tiếp theo
     currentImageShowing = randomImg;
     
     let imgEl = document.getElementById("galleryImg");
+    let textEl = document.getElementById("timelineText");
     
+    // Hủy các chuỗi transition cũ đang lỡ dở (nếu bấm nút liên tục)
     clearTimeout(transitionTimeout);
     
-    imgEl.style.transition = "opacity 0.3s ease-in-out"; 
+    // Bắt đầu làm mờ cả ảnh và chữ
+    imgEl.style.transition = "opacity 0.5s ease-in-out"; 
+    textEl.style.transition = "opacity 0.5s ease-in-out"; 
     imgEl.style.opacity = 0;
+    textEl.style.opacity = 0;
     
+    // Đợi 500ms cho mờ hẳn rồi mới đổi src ảnh mới
     transitionTimeout = setTimeout(() => {
         imgEl.src = randomImg;
-        document.getElementById("timelineText").innerText = data.text;
-        imgEl.style.opacity = 1;
-    }, 300);
+        textEl.innerText = data.text;
+        
+        // Kiểm tra nếu ảnh mới đã được tải (cache) hoặc đợi nó load xong thì từ từ hiện lên
+        if (imgEl.complete) {
+            imgEl.style.opacity = 1;
+            textEl.style.opacity = 1;
+        } else {
+            imgEl.onload = () => {
+                imgEl.style.opacity = 1;
+                textEl.style.opacity = 1;
+            };
+        }
+    }, 500);
   }
 
+  // Khởi động trình tự động lướt
   function startTimelineAutoPlay() {
+    clearInterval(timelineTimer); // Xóa bộ đếm cũ nếu có
     timelineTimer = setInterval(() => {
       currentPeriod++;
       if (currentPeriod >= timelineData.length) currentPeriod = 0;
       displayRandomImage(currentPeriod);
-    }, 4500);
+    }, 5000); // 5 giây nhảy mốc 1 lần (đã chừa thời gian cho hiệu ứng mượt)
   }
 
+  // Hành động khi nhấn nút
   function showTimeline(i) {
+    // 1. Reset bộ đếm tự động (Trong lúc xem ảnh, time reset lại từ đầu)
     clearInterval(timelineTimer);
     
+    // 2. Lập tức đổi ảnh
     currentPeriod = i;
     displayRandomImage(currentPeriod);
     
+    // 3. Khởi động lại bộ đếm: Sau đó nếu không bấm gì nữa -> chạy auto tiếp
     startTimelineAutoPlay();
   }
 
+  // Kích hoạt chạy auto khi mới mở web
   startTimelineAutoPlay();
 
   function sendWish() {
