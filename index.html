@@ -18,10 +18,9 @@
     }
 
     body {
-      background: #e0e0e0; /* Nền xám ngoài app */
+      background: #e0e0e0; 
       display: flex;
       justify-content: center;
-      /* Dùng font Quicksand cho toàn bộ body */
       font-family: 'Quicksand', sans-serif;
       color: #333;
       min-height: 100vh;
@@ -31,7 +30,7 @@
     #app-container {
       width: 100%;
       max-width: 430px;
-      background: #fffafa; /* Màu trắng hơi pha hồng pastel */
+      background: #fffafa; 
       min-height: 100vh;
       position: relative;
       box-shadow: 0 0 30px rgba(0,0,0,0.2);
@@ -44,40 +43,34 @@
     }
 
     /* --- HERO --- */
- /* --- HERO SECTION CÓ ẢNH NỀN TRONG SUỐT --- */
-.hero {
-  position: relative; /* Bắt buộc phải có để giữ ảnh nền ở trong khung */
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: #ffe4e1; /* Màu nền sẽ lộ ra khi ảnh bị làm mờ (có thể đổi màu khác) */
-  padding: 20px;
-  z-index: 1; /* Giữ cho chữ luôn nổi lên trên */
-}
+    .hero {
+      position: relative; 
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: #ffe4e1; 
+      padding: 20px;
+      z-index: 1; 
+    }
 
-.hero::before {
-  content: "";
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  
-  /* Đổi tên ảnh của bạn ở đây */
-  background-image: url('./images/A (6).jpg'); 
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  
-  /* ĐIỀU CHỈNH ĐỘ TRONG SUỐT Ở ĐÂY */
-  opacity: 0.4; /* 0.4 tương đương 40%. 1 là rõ nét 100%, 0 là tàng hình */
-  
-  z-index: -1; /* Đẩy ảnh lùi về phía sau chữ */
-}
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: url('./images/A (6).jpg'); 
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.4; 
+      z-index: -1; 
+    }
 
     .hero h1 {
       font-family: 'Dancing Script', cursive;
-      font-size: 46px; /* Chữ to và uốn lượn */
-      color: #900C3F; /* Đỏ rượu vang sang trọng */
+      font-size: 46px; 
+      color: #900C3F; 
       margin: 10px 0 25px 0;
       text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
     }
@@ -161,7 +154,6 @@
       letter-spacing: 1px;
     }
 
-    /* Thêm chữ Mở thiệp nhấp nháy */
     .envelope span {
       z-index: 10;
       background: rgba(255,255,255,0.2);
@@ -195,7 +187,7 @@
 
     button {
       border: none;
-      border-radius: 25px; /* Bo tròn mượt mà */
+      border-radius: 25px; 
       background: #C70039;
       color: white;
       font-family: 'Quicksand', sans-serif;
@@ -236,7 +228,7 @@
       overflow: hidden;
       box-shadow: 0 8px 25px rgba(0,0,0,0.1);
       background: #fff;
-      border: 3px solid #fff; /* Viền trắng ảnh phong cách Polaroid */
+      border: 3px solid #fff; 
     }
 
     /* --- TIMELINE BUTTONS --- */
@@ -286,7 +278,7 @@
 
     /* --- WISHES --- */
     #wishWall {
-      height: 160px;
+      height: 310px; /* Đã tăng chiều cao để đủ chỗ cho 6 lời chúc */
       overflow: hidden;
       width: 100%;
       position: relative;
@@ -464,7 +456,10 @@
 
 <script>
   var scriptURL = "https://script.google.com/macros/s/AKfycbxxEWDSGCb75NJLCtmpY2fWyqseWokictFnhc1OThQ6o_JkHL9QpOa2A2xRn_JFliNaFg/exec";
+  
+  // BIẾN CHO LỜI CHÚC
   var wishes = [];
+  var shuffledWishes = []; // Mảng phụ để quản lý việc xáo trộn và không lặp lại
 
   function openInvite() {
     document.getElementById("envelopeWrap").style.display = "none";
@@ -513,23 +508,45 @@
     document.getElementById("mapFrame").src = maps[n - 1];
   }
 
+  // HÀM HỖ TRỢ XÁO TRỘN LỜI CHÚC
+  function refillAndShuffleWishes() {
+    shuffledWishes = [...wishes];
+    for (let i = shuffledWishes.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledWishes[i], shuffledWishes[j]] = [shuffledWishes[j], shuffledWishes[i]];
+    }
+  }
+
   function loadWishes() {
     fetch(scriptURL)
       .then(r => r.json())
-      .then(data => { wishes = data; })
+      .then(data => { 
+        wishes = data; 
+        refillAndShuffleWishes(); // Nạp và xáo trộn lần đầu
+      })
       .catch(e => console.log("Chưa có data hoặc lỗi kết nối"));
   }
 
+  // LOGIC HIỂN THỊ LỜI CHÚC
   setInterval(() => {
     if (wishes.length == 0) return;
-    let r = wishes[Math.floor(Math.random() * wishes.length)];
+
+    // Nếu đã hiển thị hết danh sách xáo trộn, nạp và xáo trộn lại từ đầu
+    if (shuffledWishes.length === 0) {
+        refillAndShuffleWishes();
+    }
+    
+    // Rút ra 1 lời chúc (đảm bảo không bị lặp lại cho đến khi hết mảng)
+    let r = shuffledWishes.pop();
+
     let list = document.getElementById("wishList");
     let div = document.createElement("div");
     div.className = "wishItem";
     div.innerHTML = "<b>" + r[1] + "</b>: " + r[2];
     list.appendChild(div);
 
-    while (list.children.length > 4) {
+    // Giữ lại 6 lời chúc trên màn hình
+    while (list.children.length > 6) {
       list.removeChild(list.children[0]);
     }
 
@@ -568,7 +585,8 @@
   ];
 
   var currentPeriod = 0;
-  var autoPlay = true;
+  var timelineTimer;
+  var transitionTimeout;
 
   function displayRandomImage(periodIndex) {
     let data = timelineData[periodIndex];
@@ -576,30 +594,43 @@
     
     let imgEl = document.getElementById("galleryImg");
     
-    // Hiệu ứng mờ dần (Fade-in / Fade-out)
-    imgEl.style.transition = "opacity 0.4s ease-in-out";
+    // Clear timeout cũ để tránh bị chớp giật khi bấm liên tục
+    clearTimeout(transitionTimeout);
+    
+    imgEl.style.transition = "opacity 0.3s ease-in-out"; // Chuyển nhanh và mượt hơn
     imgEl.style.opacity = 0;
     
-    setTimeout(() => {
+    transitionTimeout = setTimeout(() => {
         imgEl.src = randomImg;
         document.getElementById("timelineText").innerText = data.text;
         imgEl.style.opacity = 1;
-    }, 400);
+    }, 300);
+  }
+
+  function startTimelineAutoPlay() {
+    timelineTimer = setInterval(() => {
+      currentPeriod++;
+      if (currentPeriod >= timelineData.length) currentPeriod = 0;
+      displayRandomImage(currentPeriod);
+    }, 4500);
   }
 
   function showTimeline(i) {
-    autoPlay = false; // Tạm dừng tự động nhảy nếu khách tự bấm
+    // 1. Xóa chế độ tự động nhảy hiện tại
+    clearInterval(timelineTimer);
+    
+    // 2. Lập tức hiển thị ảnh của mốc thời gian vừa bấm
     currentPeriod = i;
     displayRandomImage(currentPeriod);
+    
+    // 3. Khởi động lại bộ đếm tự động nhảy ảnh (nếu không bấm nữa thì 4.5s sau sẽ nhảy tiếp)
+    startTimelineAutoPlay();
   }
 
-  setInterval(() => {
-    if (!autoPlay) return;
-    currentPeriod++;
-    if (currentPeriod >= timelineData.length) currentPeriod = 0;
-    displayRandomImage(currentPeriod);
-  }, 4500); // 4.5 giây đổi ảnh 1 lần
-  /* --- KẾT THÚC TIMELINE MỚI --- */
+  // Khởi chạy autoplay lần đầu khi tải
+  startTimelineAutoPlay();
+
+  /* --- KẾT THÚC TIMELINE --- */
 
   function sendWish() {
     var name = document.getElementById("name").value.trim();
