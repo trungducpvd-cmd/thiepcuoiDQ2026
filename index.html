@@ -278,7 +278,7 @@
 
     /* --- WISHES --- */
     #wishWall {
-      height: 310px; /* Đã tăng chiều cao để đủ chỗ cho 6 lời chúc */
+      height: 310px;
       overflow: hidden;
       width: 100%;
       position: relative;
@@ -427,6 +427,7 @@
         <button onclick="showTimeline(2)">2026<br><small>Cưới</small></button>
       </div>
       <div class="galleryWrap">
+        <!-- Đặt id và src ban đầu ở đây -->
         <img id="galleryImg" src="./images/A (1).jpg" alt="Hình cưới">
         <div class="timelineText" id="timelineText">2022 – Lần đầu quen nhau</div>
       </div>
@@ -459,7 +460,7 @@
   
   // BIẾN CHO LỜI CHÚC
   var wishes = [];
-  var shuffledWishes = []; // Mảng phụ để quản lý việc xáo trộn và không lặp lại
+  var shuffledWishes = []; 
 
   function openInvite() {
     document.getElementById("envelopeWrap").style.display = "none";
@@ -508,7 +509,6 @@
     document.getElementById("mapFrame").src = maps[n - 1];
   }
 
-  // HÀM HỖ TRỢ XÁO TRỘN LỜI CHÚC
   function refillAndShuffleWishes() {
     shuffledWishes = [...wishes];
     for (let i = shuffledWishes.length - 1; i > 0; i--) {
@@ -522,21 +522,18 @@
       .then(r => r.json())
       .then(data => { 
         wishes = data; 
-        refillAndShuffleWishes(); // Nạp và xáo trộn lần đầu
+        refillAndShuffleWishes(); 
       })
       .catch(e => console.log("Chưa có data hoặc lỗi kết nối"));
   }
 
-  // LOGIC HIỂN THỊ LỜI CHÚC
   setInterval(() => {
     if (wishes.length == 0) return;
 
-    // Nếu đã hiển thị hết danh sách xáo trộn, nạp và xáo trộn lại từ đầu
     if (shuffledWishes.length === 0) {
         refillAndShuffleWishes();
     }
     
-    // Rút ra 1 lời chúc (đảm bảo không bị lặp lại cho đến khi hết mảng)
     let r = shuffledWishes.pop();
 
     let list = document.getElementById("wishList");
@@ -545,7 +542,6 @@
     div.innerHTML = "<b>" + r[1] + "</b>: " + r[2];
     list.appendChild(div);
 
-    // Giữ lại 6 lời chúc trên màn hình
     while (list.children.length > 6) {
       list.removeChild(list.children[0]);
     }
@@ -558,7 +554,7 @@
     }, 600);
   }, 2500);
 
-  /* --- TIMELINE MỚI: HIỂN THỊ ẢNH NGẪU NHIÊN THEO MỐC --- */
+  /* --- TIMELINE MỚI CẬP NHẬT --- */
   var timelineData = [
     {
       text: "2022 – Lần đầu quen nhau",
@@ -587,17 +583,33 @@
   var currentPeriod = 0;
   var timelineTimer;
   var transitionTimeout;
+  
+  // Biến này để lưu ảnh nào đang được hiển thị trên màn hình
+  // Giá trị ban đầu phải khớp với thẻ <img src="..."> ở trên HTML
+  var currentImageShowing = "./images/A (1).jpg"; 
 
   function displayRandomImage(periodIndex) {
     let data = timelineData[periodIndex];
-    let randomImg = data.images[Math.floor(Math.random() * data.images.length)];
+    
+    // Lọc bỏ cái ảnh đang được hiển thị ra khỏi danh sách
+    let availableImages = data.images.filter(img => img !== currentImageShowing);
+    
+    // Đề phòng trường hợp mốc đó chỉ có 1 ảnh, lọc xong không còn ảnh nào, ta đành lấy lại mảng gốc
+    if (availableImages.length === 0) {
+      availableImages = data.images;
+    }
+
+    // Chọn ngẫu nhiên trong danh sách ảnh MỚI
+    let randomImg = availableImages[Math.floor(Math.random() * availableImages.length)];
+    
+    // Cập nhật lại ảnh đang hiển thị cho lần tiếp theo
+    currentImageShowing = randomImg;
     
     let imgEl = document.getElementById("galleryImg");
     
-    // Clear timeout cũ để tránh bị chớp giật khi bấm liên tục
     clearTimeout(transitionTimeout);
     
-    imgEl.style.transition = "opacity 0.3s ease-in-out"; // Chuyển nhanh và mượt hơn
+    imgEl.style.transition = "opacity 0.3s ease-in-out"; 
     imgEl.style.opacity = 0;
     
     transitionTimeout = setTimeout(() => {
@@ -616,21 +628,15 @@
   }
 
   function showTimeline(i) {
-    // 1. Xóa chế độ tự động nhảy hiện tại
     clearInterval(timelineTimer);
     
-    // 2. Lập tức hiển thị ảnh của mốc thời gian vừa bấm
     currentPeriod = i;
     displayRandomImage(currentPeriod);
     
-    // 3. Khởi động lại bộ đếm tự động nhảy ảnh (nếu không bấm nữa thì 4.5s sau sẽ nhảy tiếp)
     startTimelineAutoPlay();
   }
 
-  // Khởi chạy autoplay lần đầu khi tải
   startTimelineAutoPlay();
-
-  /* --- KẾT THÚC TIMELINE --- */
 
   function sendWish() {
     var name = document.getElementById("name").value.trim();
